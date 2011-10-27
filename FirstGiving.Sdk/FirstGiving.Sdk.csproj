@@ -54,6 +54,7 @@
     <Compile Include="Donation.cs" />
     <Compile Include="PaymentData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResponseData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE" />

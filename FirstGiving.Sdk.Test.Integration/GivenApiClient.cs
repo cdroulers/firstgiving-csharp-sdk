@@ -63,6 +63,17 @@ namespace FirstGiving.Sdk.Test.Integration
         }
 
         [Test]
+        public void When_donating_by_credit_card_with_broken_parameters_Then_throws()
+        {
+            var donation = GetDonation();
+            var paymentData = GetCreditCardPaymentData();
+
+            paymentData.Country = "ZZ";
+
+            Assert.Throws<InvalidInputException>(() => this.apiClient.DonateByCreditCard(donation, paymentData, IPAddress.Parse("127.0.0.1")));
+        }
+
+        [Test]
         public void When_using_wrong_credentials_Then_throws()
         {
             var donation = GetDonation();
@@ -82,6 +93,26 @@ namespace FirstGiving.Sdk.Test.Integration
             string result = this.apiClient.DonateByCreditCardRecurring(donation, paymentData, IPAddress.Parse("127.0.0.1"), BillingFrequency.Monthly, 5);
 
             Assert.That(result, Is.Not.EqualTo(string.Empty));
+        }
+
+        [Test]
+        public void When_verifying_Then_works()
+        {
+            string result = this.apiClient.SayHello();
+
+            bool actual = this.apiClient.Verify(this.apiClient.LastestResponse.Body, this.apiClient.LastestResponse.Signature);
+
+            Assert.That(actual, Is.EqualTo(true));
+        }
+
+        [Test]
+        public void When_verifying_Then_returns_false_for_bullshit()
+        {
+            string result = this.apiClient.SayHello();
+
+            bool actual = this.apiClient.Verify(this.apiClient.LastestResponse.Body, "lolwut");
+
+            Assert.That(actual, Is.EqualTo(false));
         }
     }
 }

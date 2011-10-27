@@ -16,6 +16,8 @@ namespace FirstGiving.Sdk.Api
         public string SecurityToken { get; private set; }
         public Uri ApiEndpoint { get; private set; }
 
+        public ResponseData LastestResponse { get; private set; }
+
         public ApiClient(string applicationKey, string securityToken, Uri apiEndpoint)
         {
             this.ApplicationKey = applicationKey;
@@ -75,6 +77,27 @@ namespace FirstGiving.Sdk.Api
             return transactionID.Value;
         }
 
+        /// <summary>
+        /// Verify a message that you have received actually originated from FirstGiving’s API.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="signature">The signature.</param>
+        /// <returns>True if it originated from FirstGiving.</returns>
+        public bool Verify(string message, string signature)
+        {
+            Validate.Is.NotNullOrWhiteSpace(message, "message");
+            Validate.Is.NotNullOrWhiteSpace(signature, "signature");
+
+            var parameters = new Dictionary<string, string>();
+            parameters["message"] = message;
+            parameters["signature"] = signature;
+
+            var result = this.SendApiRequest("/verify", "POST", parameters);
+            var xml = XDocument.Parse(result);
+            var valid = xml.Descendants("valid").First();
+            return valid.Value == "1";
+        }
+
         protected Uri GetResourceUri(string resourceName)
         {
             var builder = new UriBuilder(this.ApiEndpoint);
@@ -112,7 +135,9 @@ namespace FirstGiving.Sdk.Api
                 {
                     using (var reader = new StreamReader(response.GetResponseStream()))
                     {
-                        return reader.ReadToEnd();
+                        string result = reader.ReadToEnd();
+                        this.LastestResponse = new ResponseData() { Body = result, Signature = response.Headers["Jg-Response-Signature"] };
+                        return result;
                     }
                 }
             }
@@ -124,6 +149,7 @@ namespace FirstGiving.Sdk.Api
                     using (var reader = new StreamReader(response.GetResponseStream()))
                     {
                         result = reader.ReadToEnd();
+                        this.LastestResponse = new ResponseData() { Body = result, Signature = response.Headers["Jg-Response-Signature"] };
                     }
                     switch (response.StatusCode)
                     {
