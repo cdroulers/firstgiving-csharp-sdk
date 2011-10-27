@@ -1,0 +1,6 @@
+syntax: glob
+*ReSharper*
+obj/
+bin/
+FirstGiving.Sdk.Test.Integration/credentials.txt
+*.suo
