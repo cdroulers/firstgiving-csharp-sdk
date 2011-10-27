@@ -1,0 +1,17 @@
+﻿FirstGiving C# SDK
+
+The FirstGiving Platform is a set of APIs that integrate our charity and donations capabilities into your website. Read more about integrating FirstGiving with your web site on the FirstGiving developer site.
+
+This repository contains the open source C# SDK that allows you to utilize the above on your website. Except as otherwise noted, the FirstGiving C# SDK is licensed under the Apache Licence, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+
+
+
+
+[API Information]: http://developers.firstgiving.com/
+
+
+Feedback
+--------
+
+We are relying on the Google Code issue tracker linked from above for
+feedback. File bugs or other issues at http://code.google.com/p/firstgiving-csharp-sdk/issues/list
