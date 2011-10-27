@@ -42,10 +42,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiClient.cs" />
+    <Compile Include="Api\IApiClient.cs" />
     <Compile Include="Api\ServerErrorException.cs" />
     <Compile Include="Api\FirstGivingException.cs" />
     <Compile Include="Api\InvalidInputException.cs" />
     <Compile Include="Api\UnauthorizedException.cs" />
+    <Compile Include="BillingFrequency.cs" />
     <Compile Include="CreditCardKind.cs" />
     <Compile Include="CreditCardPaymentData.cs" />
     <Compile Include="Currency.cs" />

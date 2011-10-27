@@ -72,5 +72,16 @@ namespace FirstGiving.Sdk.Test.Integration
 
             Assert.Throws<UnauthorizedException>(() => faultyClient.DonateByCreditCard(donation, paymentData, IPAddress.Parse("127.0.0.1")));
         }
+
+        [Test]
+        public void When_donating_by_credit_card_recurring_Then_works()
+        {
+            var donation = GetDonation();
+            var paymentData = GetCreditCardPaymentData();
+
+            string result = this.apiClient.DonateByCreditCardRecurring(donation, paymentData, IPAddress.Parse("127.0.0.1"), BillingFrequency.Monthly, 5);
+
+            Assert.That(result, Is.Not.EqualTo(string.Empty));
+        }
     }
 }

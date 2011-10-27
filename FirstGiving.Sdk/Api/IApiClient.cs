@@ -10,5 +10,6 @@ namespace FirstGiving.Sdk.Api
         Uri ApiEndpoint { get; }
         string SayHello();
         string DonateByCreditCard(Donation donation, CreditCardPaymentData paymentData, IPAddress remoteAddress);
+        string DonateByCreditCardRecurring(Donation donation, CreditCardPaymentData paymentData, IPAddress remoteAddress, BillingFrequency frequency, int? term);
     }
 }
