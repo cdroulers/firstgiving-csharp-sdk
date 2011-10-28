@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace FirstGiving.Sdk
+namespace FirstGiving.Sdk.Api
 {
     public enum Currency
     {

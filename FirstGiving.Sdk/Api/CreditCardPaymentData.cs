@@ -4,7 +4,7 @@ using System.Linq;
 using System.Net.Mail;
 using System.Text;
 
-namespace FirstGiving.Sdk
+namespace FirstGiving.Sdk.Api
 {
     public class CreditCardPaymentData : PaymentData
     {
@@ -15,7 +15,15 @@ namespace FirstGiving.Sdk
             set
             {
                 Validate.Is.NotNullOrWhiteSpace(value, "CardNumber");
-                Validate.Is.EqualTo(value.Length, 16, "CardNumber.Length");
+                switch (this.CardKind)
+                {
+                    case CreditCardKind.AmericanExpress:
+                        Validate.Is.EqualTo(value.Length, 15, "CardNumber.AmericanExpress.Length");
+                        break;
+                    default:
+                        Validate.Is.EqualTo(value.Length, 16, "CardNumber.Length");
+                        break;
+                }
                 this.cardNumber = value;
             }
         }

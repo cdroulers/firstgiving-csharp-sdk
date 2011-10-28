@@ -71,6 +71,8 @@ namespace FirstGiving.Sdk.Test.Integration
             paymentData.Country = "ZZ";
 
             Assert.Throws<InvalidInputException>(() => this.apiClient.DonateByCreditCard(donation, paymentData, IPAddress.Parse("127.0.0.1")));
+            Assert.That(() => this.apiClient.DonateByCreditCard(donation, paymentData, IPAddress.Parse("127.0.0.1")),
+                Throws.TypeOf<InvalidInputException>().With.Property("ErrorTarget").EqualTo("billToCountry"));
         }
 
         [Test]
@@ -89,6 +91,7 @@ namespace FirstGiving.Sdk.Test.Integration
         {
             var donation = GetDonation();
             var paymentData = GetCreditCardPaymentData();
+            paymentData.CardNumber = "4012888888881881";
 
             string result = this.apiClient.DonateByCreditCardRecurring(donation, paymentData, IPAddress.Parse("127.0.0.1"), BillingFrequency.Monthly, 5);
 
@@ -100,7 +103,7 @@ namespace FirstGiving.Sdk.Test.Integration
         {
             string result = this.apiClient.SayHello();
 
-            bool actual = this.apiClient.Verify(this.apiClient.LastestResponse.Body, this.apiClient.LastestResponse.Signature);
+            bool actual = this.apiClient.Verify(this.apiClient.LastestResponse.OriginalResponse, this.apiClient.LastestResponse.Signature);
 
             Assert.That(actual, Is.EqualTo(true));
         }
@@ -110,7 +113,7 @@ namespace FirstGiving.Sdk.Test.Integration
         {
             string result = this.apiClient.SayHello();
 
-            bool actual = this.apiClient.Verify(this.apiClient.LastestResponse.Body, "lolwut");
+            bool actual = this.apiClient.Verify(this.apiClient.LastestResponse.OriginalResponse, "lolwut");
 
             Assert.That(actual, Is.EqualTo(false));
         }

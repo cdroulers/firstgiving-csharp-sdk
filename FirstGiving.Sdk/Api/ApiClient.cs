@@ -10,26 +10,24 @@ using System.Xml.Linq;
 
 namespace FirstGiving.Sdk.Api
 {
-    public class ApiClient : IApiClient
+    public class ApiClient : BaseRestClient, IApiClient
     {
         public string ApplicationKey { get; private set; }
         public string SecurityToken { get; private set; }
-        public Uri ApiEndpoint { get; private set; }
 
         public ResponseData LastestResponse { get; private set; }
 
         public ApiClient(string applicationKey, string securityToken, Uri apiEndpoint)
+            : base(apiEndpoint)
         {
             this.ApplicationKey = applicationKey;
             this.SecurityToken = securityToken;
-            this.ApiEndpoint = apiEndpoint;
         }
 
         public string SayHello()
         {
-            string result = this.SendApiRequest("/default/test/0", "GET");
+            var xml = this.SendApiRequest("/default/test/0", "GET");
 
-            var xml = XDocument.Parse(result);
             var message = xml.Descendants("friendlyMessage").First();
 
             return message.Value;
@@ -46,9 +44,8 @@ namespace FirstGiving.Sdk.Api
         {
             var parameters = ApiClient.GetCreditCardParameters(donation, paymentData, remoteAddress);
 
-            string result = this.SendApiRequest("/donation/creditcard", "POST", parameters);
+            var xml = this.SendApiRequest("/donation/creditcard", "POST", parameters);
 
-            var xml = XDocument.Parse(result);
             var transactionID = xml.Descendants("transactionId").First();
             return transactionID.Value;
         }
@@ -70,9 +67,8 @@ namespace FirstGiving.Sdk.Api
             parameters["recurringBillingFrequency"] = ApiClient.GetBillingFrequencyCode(frequency);
             parameters["recurringBillingTerm"] = (term.HasValue ? term.Value : 0).ToString();
 
-            string result = this.SendApiRequest("/donation/recurringcreditcardprofile", "POST", parameters);
+            var xml = this.SendApiRequest("/donation/recurringcreditcardprofile", "POST", parameters);
 
-            var xml = XDocument.Parse(result);
             var transactionID = xml.Descendants("recurringDonationProfileId").First();
             return transactionID.Value;
         }
@@ -92,77 +88,50 @@ namespace FirstGiving.Sdk.Api
             parameters["message"] = message;
             parameters["signature"] = signature;
 
-            var result = this.SendApiRequest("/verify", "POST", parameters);
-            var xml = XDocument.Parse(result);
+            var xml = this.SendApiRequest("/verify", "POST", parameters);
             var valid = xml.Descendants("valid").First();
             return valid.Value == "1";
         }
 
-        protected Uri GetResourceUri(string resourceName)
+        protected override void PreRequest(HttpWebRequest request)
         {
-            var builder = new UriBuilder(this.ApiEndpoint);
-            builder.Path += (resourceName.StartsWith("/") ? resourceName : "/" + resourceName);
-            return builder.Uri;
-        }
-
-        protected string SendApiRequest(string resourceName, string httpMethod, IDictionary<string, string> values = null)
-        {
-            Validate.Is.NotNullOrWhiteSpace(resourceName, "resourceName");
-            Validate.Is.NotNullOrWhiteSpace(httpMethod, "httpMethod");
-
-            var uri = this.GetResourceUri(resourceName);
-            var request = HttpWebRequest.Create(uri) as HttpWebRequest;
-
-            request.Accept = "application/json";
             request.Headers["JG_APPLICATIONKEY"] = this.ApplicationKey;
             request.Headers["JG_SECURITYTOKEN"] = this.SecurityToken;
+        }
 
-            switch (httpMethod.ToUpperInvariant())
-            {
-                case "GET":
-                    ApiClient.SetUpGetRequest(request);
-                    break;
-                case "POST":
-                    ApiClient.SetUpPostRequest(request, values);
-                    break;
-                default:
-                    throw new NotSupportedException(string.Format("The HTTP method \"{0}\" is not supported", httpMethod));
-            }
+        protected override void PostRequest(string result, XDocument resultBody, HttpWebResponse response)
+        {
+            this.LastestResponse = new ResponseData(resultBody, result, response.Headers["Jg-Response-Signature"]);
+        }
 
-            try
+        protected override void OnException(XDocument resultBody, HttpWebResponse response, Exception e)
+        {
+            switch (response.StatusCode)
             {
-                using (var response = (HttpWebResponse)request.GetResponse())
-                {
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        string result = reader.ReadToEnd();
-                        this.LastestResponse = new ResponseData() { Body = result, Signature = response.Headers["Jg-Response-Signature"] };
-                        return result;
-                    }
-                }
+                case HttpStatusCode.Unauthorized:
+                    throw new UnauthorizedException(this.ApplicationKey, this.SecurityToken, e, resultBody);
+                case HttpStatusCode.BadRequest:
+                    string errorTarget;
+                    throw new InvalidInputException(GetInvalidInputErrorMessage(resultBody, out errorTarget), e, resultBody, errorTarget);
+                case HttpStatusCode.InternalServerError:
+                    throw new ServerErrorException(GetServerErrorErrorMessage(resultBody), e, resultBody);
             }
-            catch (WebException e)
-            {
-                using (var response = (HttpWebResponse)e.Response)
-                {
-                    string result = null;
-                    using (var reader = new StreamReader(response.GetResponseStream()))
-                    {
-                        result = reader.ReadToEnd();
-                        this.LastestResponse = new ResponseData() { Body = result, Signature = response.Headers["Jg-Response-Signature"] };
-                    }
-                    switch (response.StatusCode)
-                    {
-                        case HttpStatusCode.Unauthorized:
-                            throw new UnauthorizedException(this.ApplicationKey, this.SecurityToken, e, XDocument.Parse(result));
-                        case HttpStatusCode.BadRequest:
-                            throw new InvalidInputException(e, XDocument.Parse(result));
-                        case HttpStatusCode.InternalServerError:
-                            throw new ServerErrorException(e, XDocument.Parse(result));
-                    }
-                }
-                throw;
-            }
+        }
+
+        private static string GetInvalidInputErrorMessage(XDocument responseContent, out string errorTarget)
+        {
+            var node = responseContent.Descendants("firstGivingResponse").First();
+            string errorMessage = node.Attributes("verboseErrorMessage").First().Value;
+            var target = node.Attributes("errorTarget").FirstOrDefault();
+            errorTarget = target == null ? string.Empty : target.Value;
+            return string.Format(@"An error occurred for the target ""{0}"". Error message was:
+{1}", errorTarget, errorMessage);
+        }
+
+        private static string GetServerErrorErrorMessage(XDocument responseContent)
+        {
+            var node = responseContent.Descendants("firstGivingResponse").First();
+            return "Server error. Message was:" + Environment.NewLine + node.Attributes("verboseErrorMessage").First().Value;
         }
 
         private static IDictionary<string, string> GetCreditCardParameters(Donation donation, CreditCardPaymentData paymentData, IPAddress remoteAddress)
@@ -202,24 +171,6 @@ namespace FirstGiving.Sdk.Api
             parameters["currencyCode"] = ApiClient.GetCurrencyCode(donation.Currency);
 
             return parameters;
-        }
-
-        private static void SetUpGetRequest(WebRequest request)
-        {
-            request.Method = "GET";
-        }
-
-        private static void SetUpPostRequest(WebRequest request, IDictionary<string, string> values)
-        {
-            request.Method = "POST";
-
-            string content = string.Join("&", values.Select(v => v.Key + "=" + v.Value));
-            byte[] byteContent = Encoding.UTF8.GetBytes(content);
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = byteContent.Length;
-            var dataStream = request.GetRequestStream();
-            dataStream.Write(byteContent, 0, byteContent.Length);
-            dataStream.Close();
         }
 
         private static string GetCreditCardKindCode(CreditCardKind kind)

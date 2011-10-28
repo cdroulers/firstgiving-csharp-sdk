@@ -42,23 +42,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Api\ApiClient.cs" />
+    <Compile Include="BaseRestClient.cs" />
+    <Compile Include="Charities\Charity.cs" />
+    <Compile Include="Charities\CharityApiClient.cs" />
     <Compile Include="Api\IApiClient.cs" />
-    <Compile Include="Api\ServerErrorException.cs" />
-    <Compile Include="Api\FirstGivingException.cs" />
-    <Compile Include="Api\InvalidInputException.cs" />
-    <Compile Include="Api\UnauthorizedException.cs" />
-    <Compile Include="BillingFrequency.cs" />
-    <Compile Include="CreditCardKind.cs" />
-    <Compile Include="CreditCardPaymentData.cs" />
-    <Compile Include="Currency.cs" />
-    <Compile Include="Donation.cs" />
-    <Compile Include="PaymentData.cs" />
+    <Compile Include="NotFoundException.cs" />
+    <Compile Include="ServerErrorException.cs" />
+    <Compile Include="FirstGivingException.cs" />
+    <Compile Include="InvalidInputException.cs" />
+    <Compile Include="UnauthorizedException.cs" />
+    <Compile Include="Api\BillingFrequency.cs" />
+    <Compile Include="Api\CreditCardKind.cs" />
+    <Compile Include="Api\CreditCardPaymentData.cs" />
+    <Compile Include="Api\Currency.cs" />
+    <Compile Include="Api\Donation.cs" />
+    <Compile Include="Api\PaymentData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseData.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LICENSE" />
-    <None Include="README" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\External\Awesome.Utilities\Awesome.Utilities.System\Awesome.Utilities.System.csproj">

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml.Linq;
 
-namespace FirstGiving.Sdk.Api
+namespace FirstGiving.Sdk
 {
     public class FirstGivingException : ApplicationException
     {

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Mail;
 
-namespace FirstGiving.Sdk
+namespace FirstGiving.Sdk.Api
 {
     public abstract class PaymentData
     {
