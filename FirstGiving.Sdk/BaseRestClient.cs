@@ -48,6 +48,9 @@ namespace FirstGiving.Sdk
                 case "POST":
                     request = this.SetUpPostRequest(resourceName, values);
                     break;
+                case "DELETE":
+                    request = this.SetUpDeleteRequest(resourceName, values);
+                    break;
                 default:
                     throw new NotSupportedException(string.Format("The HTTP method \"{0}\" is not supported", httpMethod));
             }
@@ -89,6 +92,13 @@ namespace FirstGiving.Sdk
             request.Method = "GET";
             this.PreRequest(request);
 
+            return request;
+        }
+
+        private HttpWebRequest SetUpDeleteRequest(string resourceName, IDictionary<string, string> values)
+        {
+            var request = this.SetUpGetRequest(resourceName, values);
+            request.Method = "DELETE";
             return request;
         }
 

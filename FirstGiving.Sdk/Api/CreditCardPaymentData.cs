@@ -8,52 +8,13 @@ namespace FirstGiving.Sdk.Api
 {
     public class CreditCardPaymentData : PaymentData
     {
-        private string cardNumber;
-        public string CardNumber
-        {
-            get { return this.cardNumber; }
-            set
-            {
-                Validate.Is.NotNullOrWhiteSpace(value, "CardNumber");
-                switch (this.CardKind)
-                {
-                    case CreditCardKind.AmericanExpress:
-                        Validate.Is.EqualTo(value.Length, 15, "CardNumber.AmericanExpress.Length");
-                        break;
-                    default:
-                        Validate.Is.EqualTo(value.Length, 16, "CardNumber.Length");
-                        break;
-                }
-                this.cardNumber = value;
-            }
-        }
+        public string CardNumber { get; private set; }
 
-        public CreditCardKind CardKind { get; set; }
+        public CreditCardKind CardKind { get; private set; }
 
-        public DateTime CardExpirationDate { get; set; }
+        public DateTime CardExpirationDate { get; private set; }
 
-        private string cardValidationNumber;
-        public string CardValidationNumber
-        {
-            get { return this.cardValidationNumber; }
-            set
-            {
-                Validate.Is.NotNullOrWhiteSpace(value, "CardValidationNumber");
-                switch (this.CardKind)
-                {
-                    case CreditCardKind.Visa:
-                        Validate.Is.EqualTo(value.Length, 3, "CardValidationNumber.Visa.CVV2.Length");
-                        break;
-                    case CreditCardKind.MasterCard:
-                        Validate.Is.EqualTo(value.Length, 3, "CardValidationNumber.Visa.CVC2.Length");
-                        break;
-                    case CreditCardKind.AmericanExpress:
-                        Validate.Is.EqualTo(value.Length, 4, "CardValidationNumber.Visa.CID.Length");
-                        break;
-                }
-                this.cardValidationNumber = value;
-            }
-        }
+        public string CardValidationNumber { get; private set; }
 
         public string BillingDescriptor { get; set; }
 
@@ -61,6 +22,36 @@ namespace FirstGiving.Sdk.Api
             string cardNumber, CreditCardKind cardKind, DateTime cardExpirationDate, string cardValidationNumber)
             : base(firstName, lastName, address1, city, zipCode, country, emailAddress)
         {
+            this.UpdateCardData(cardNumber, cardKind, cardExpirationDate, cardValidationNumber);
+        }
+
+        public void UpdateCardData(string cardNumber, CreditCardKind cardKind, DateTime cardExpirationDate, string cardValidationNumber)
+        {
+            Validate.Is.NotNullOrWhiteSpace(cardNumber, "CardNumber");
+            switch (cardKind)
+            {
+                case CreditCardKind.AmericanExpress:
+                    Validate.Is.EqualTo(cardNumber.Length, 15, "CardNumber.AmericanExpress.Length");
+                    break;
+                default:
+                    Validate.Is.EqualTo(cardNumber.Length, 16, "CardNumber.Length");
+                    break;
+            }
+
+            Validate.Is.NotNullOrWhiteSpace(cardValidationNumber, "CardValidationNumber");
+            switch (cardKind)
+            {
+                case CreditCardKind.Visa:
+                    Validate.Is.EqualTo(cardValidationNumber.Length, 3, "CardValidationNumber.Visa.CVV2.Length");
+                    break;
+                case CreditCardKind.MasterCard:
+                    Validate.Is.EqualTo(cardValidationNumber.Length, 3, "CardValidationNumber.Visa.CVC2.Length");
+                    break;
+                case CreditCardKind.AmericanExpress:
+                    Validate.Is.EqualTo(cardValidationNumber.Length, 4, "CardValidationNumber.Visa.CID.Length");
+                    break;
+            }
+
             this.CardNumber = cardNumber;
             this.CardKind = cardKind;
             this.CardExpirationDate = cardExpirationDate;

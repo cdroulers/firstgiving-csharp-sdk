@@ -74,6 +74,38 @@ namespace FirstGiving.Sdk.Api
         }
 
         /// <summary>
+        /// Gets the credit card recurring profile with the specified ID.
+        /// </summary>
+        /// <param name="profileID">The profile ID.</param>
+        /// <returns></returns>
+        public string GetCreditCardRecurringProfile(string profileID)
+        {
+            var parameters = new Dictionary<string, string>()
+            {
+                { "id", profileID }
+            };
+            var xml = this.SendApiRequest("/recurring/billingprofile", "GET", parameters);
+
+            string temp = xml.ToString();
+            return temp;
+        }
+
+        /// <summary>
+        /// Deletes the credit card recurring profile with the specified ID.
+        /// </summary>
+        /// <param name="profileID">The profile ID.</param>
+        public void DeleteCreditCardRecurringProfile(string profileID)
+        {
+            var parameters = new Dictionary<string, string>()
+            {
+                { "id", profileID }
+            };
+            var xml = this.SendApiRequest("/recurring/billingprofile", "DELETE", parameters);
+
+            string temp = xml.ToString();
+        }
+
+        /// <summary>
         /// Verify a message that you have received actually originated from FirstGiving’s API.
         /// </summary>
         /// <param name="message">The message.</param>
