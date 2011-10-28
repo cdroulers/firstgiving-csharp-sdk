@@ -9,7 +9,7 @@ using System.Globalization;
 
 namespace FirstGiving.Sdk.Charities
 {
-    public class CharityApiClient : BaseRestClient
+    public class CharityApiClient : BaseRestClient, ICharityApiClient
     {
         public CharityApiClient(Uri apiEndpoint)
             : base(apiEndpoint)

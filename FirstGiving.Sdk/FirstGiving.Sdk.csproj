@@ -46,6 +46,7 @@
     <Compile Include="Charities\Charity.cs" />
     <Compile Include="Charities\CharityApiClient.cs" />
     <Compile Include="Api\IApiClient.cs" />
+    <Compile Include="Charities\ICharityApiClient.cs" />
     <Compile Include="NotFoundException.cs" />
     <Compile Include="ServerErrorException.cs" />
     <Compile Include="FirstGivingException.cs" />
