@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\SolutionAssemblyInfo.cs">
+      <Link>Properties\SolutionAssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="GivenCharityApiClient.cs" />
     <Compile Include="CredentialHelper.cs" />
     <Compile Include="GivenApiClient.cs" />
