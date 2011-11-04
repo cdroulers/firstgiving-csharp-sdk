@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Awesome.Utilities.System, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Awesome.Utilities\Awesome.Utilities.System.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -60,12 +64,6 @@
     <Compile Include="Api\PaymentData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResponseData.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\External\Awesome.Utilities\Awesome.Utilities.System\Awesome.Utilities.System.csproj">
-      <Project>{BD269F95-E64C-489D-AA68-5FDF6E513AED}</Project>
-      <Name>Awesome.Utilities.System</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
