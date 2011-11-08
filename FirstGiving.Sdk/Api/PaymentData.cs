@@ -72,7 +72,6 @@ namespace FirstGiving.Sdk.Api
             get { return this.address2; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "Address2");
                 Validate.Is.LowerThanOrEqualTo((value ?? string.Empty).Length, 255, "Address2.Length");
                 this.address2 = value;
             }
@@ -84,7 +83,6 @@ namespace FirstGiving.Sdk.Api
             get { return this.address3; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "Address3");
                 Validate.Is.LowerThanOrEqualTo((value ?? string.Empty).Length, 255, "Address3.Length");
                 this.address3 = value;
             }
