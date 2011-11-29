@@ -91,6 +91,34 @@ namespace FirstGiving.Sdk.Test.Integration
         }
 
         [Test]
+        public void When_getting_charity_by_government_id_with_xml_error_Then_returns_right_data()
+        {
+            var actual = this.apiClient.GetByGovernmentID("208645034");
+
+            Assert.That(actual.UUID, Is.EqualTo(new Guid("a490749e-2024-11e0-a279-4061860da51d")));
+            Assert.That(actual.Address, Is.EqualTo("2002 S CHESTER AVE BAKERSFIELD CA 93304-5242"));
+            Assert.That(actual.Address1, Is.EqualTo("2002 S CHESTER AVE"));
+            Assert.That(actual.Address2, Is.EqualTo(string.Empty));
+            Assert.That(actual.Address3, Is.EqualTo(string.Empty));
+            Assert.That(actual.AddressLines, Is.EqualTo(string.Empty));
+            Assert.That(actual.Alias, Is.EqualTo(string.Empty));
+            Assert.That(actual.AreaCode, Is.EqualTo(string.Empty));
+            Assert.That(actual.CategoryCode, Is.EqualTo("N63"));
+            Assert.That(actual.City, Is.EqualTo("BAKERSFIELD"));
+            Assert.That(actual.Country, Is.EqualTo("US"));
+            Assert.That(actual.County, Is.EqualTo("CA"));
+            Assert.That(actual.GovernmentID, Is.EqualTo("208645034"));
+            Assert.That(actual.Latitude, Is.EqualTo(35.3665));
+            Assert.That(actual.Longitude, Is.EqualTo(-119.021));
+            Assert.That(actual.Name, Is.EqualTo("PARROQUIA NUESTRA SEORA DEL CARMEN"));
+            Assert.That(actual.PhoneNumber, Is.EqualTo(string.Empty));
+            Assert.That(actual.PostalCode, Is.EqualTo("93304-5242"));
+            Assert.That(actual.Region, Is.EqualTo("CA"));
+            Assert.That(actual.Revoked, Is.EqualTo(false));
+            Assert.That(actual.Url, Is.EqualTo(null));
+        }
+
+        [Test]
         public void When_getting_charity_by_name_Then_returns_right_data()
         {
             var results = this.apiClient.FindByName("1 1 1 ONE");

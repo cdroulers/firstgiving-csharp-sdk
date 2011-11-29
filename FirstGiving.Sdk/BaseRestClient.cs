@@ -61,7 +61,7 @@ namespace FirstGiving.Sdk
                 {
                     using (var reader = new StreamReader(response.GetResponseStream()))
                     {
-                        string xmlResponse = reader.ReadToEnd();
+                        string xmlResponse = SanitizeXmlString(reader.ReadToEnd());
                         var result = XDocument.Parse(xmlResponse);
                         this.PostRequest(xmlResponse, result, response);
                         return result;
@@ -120,6 +120,42 @@ namespace FirstGiving.Sdk
                 dataStream.Close();
             }
             return request;
+        }
+
+        /// <summary>
+        /// Remove illegal XML characters from a string.
+        /// </summary>
+        private static string SanitizeXmlString(string xml)
+        {
+            Validate.Is.NotNull(xml, "xml");
+
+            StringBuilder buffer = new StringBuilder(xml.Length);
+
+            foreach (char c in xml)
+            {
+                if (IsLegalXmlChar(c))
+                {
+                    buffer.Append(c);
+                }
+            }
+
+            return buffer.ToString();
+        }
+
+        /// <summary>
+        /// Whether a given character is allowed by XML 1.0.
+        /// </summary>
+        private static bool IsLegalXmlChar(int character)
+        {
+            return
+            (
+                 character == 0x9 /* == '\t' == 9   */          ||
+                 character == 0xA /* == '\n' == 10  */          ||
+                 character == 0xD /* == '\r' == 13  */          ||
+                (character >= 0x20 && character <= 0xD7FF) ||
+                (character >= 0xE000 && character <= 0xFFFD) ||
+                (character >= 0x10000 && character <= 0x10FFFF)
+            );
         }
     }
 }
