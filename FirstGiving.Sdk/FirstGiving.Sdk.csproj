@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\FirstGiving.Sdk.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\FirstGiving.Sdk.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Awesome.Utilities.System, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -49,6 +51,7 @@
       <Link>Properties\SolutionAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Api\ApiClient.cs" />
+    <Compile Include="Api\FakeApiClient.cs" />
     <Compile Include="Api\TestApiClient.cs" />
     <Compile Include="BaseRestClient.cs" />
     <Compile Include="Charities\Charity.cs" />
