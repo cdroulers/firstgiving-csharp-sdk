@@ -9,19 +9,51 @@ using System.Web;
 
 namespace FirstGiving.Sdk
 {
+    /// <summary>
+    /// A basic rest client for API queries
+    /// </summary>
     public abstract class BaseRestClient
     {
+        /// <summary>
+        /// Gets the API endpoint.
+        /// </summary>
         public Uri ApiEndpoint { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BaseRestClient"/> class.
+        /// </summary>
+        /// <param name="apiEndpoint">The API endpoint.</param>
         protected BaseRestClient(Uri apiEndpoint)
         {
             this.ApiEndpoint = apiEndpoint;
         }
 
+        /// <summary>
+        /// Called just before a request is made.
+        /// </summary>
+        /// <param name="request">The request.</param>
         protected abstract void PreRequest(HttpWebRequest request);
+        /// <summary>
+        /// Called after a request is made.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="resultBody">The result body.</param>
+        /// <param name="response">The response.</param>
         protected abstract void PostRequest(string result, XDocument resultBody, HttpWebResponse response);
+        /// <summary>
+        /// Called when an exception occurss
+        /// </summary>
+        /// <param name="resultBody">The result body.</param>
+        /// <param name="response">The response.</param>
+        /// <param name="e">The e.</param>
         protected abstract void OnException(XDocument resultBody, HttpWebResponse response, Exception e);
 
+        /// <summary>
+        /// Gets the resource URI.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         protected Uri GetResourceUri(string resourceName, IDictionary<string, string> values = null)
         {
             var builder = new UriBuilder(this.ApiEndpoint);
@@ -33,6 +65,13 @@ namespace FirstGiving.Sdk
             return builder.Uri;
         }
 
+        /// <summary>
+        /// Sends the API request.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="httpMethod">The HTTP method.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         protected XDocument SendApiRequest(string resourceName, string httpMethod, IDictionary<string, string> values = null)
         {
             Validate.Is.NotNullOrWhiteSpace(resourceName, "resourceName");
@@ -85,6 +124,12 @@ namespace FirstGiving.Sdk
             }
         }
 
+        /// <summary>
+        /// Sets up get request.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         private HttpWebRequest SetUpGetRequest(string resourceName, IDictionary<string, string> values)
         {
             var uri = this.GetResourceUri(resourceName, values);
@@ -95,6 +140,12 @@ namespace FirstGiving.Sdk
             return request;
         }
 
+        /// <summary>
+        /// Sets up delete request.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         private HttpWebRequest SetUpDeleteRequest(string resourceName, IDictionary<string, string> values)
         {
             var request = this.SetUpGetRequest(resourceName, values);
@@ -102,6 +153,12 @@ namespace FirstGiving.Sdk
             return request;
         }
 
+        /// <summary>
+        /// Sets up post request.
+        /// </summary>
+        /// <param name="resourceName">Name of the resource.</param>
+        /// <param name="values">The values.</param>
+        /// <returns></returns>
         private HttpWebRequest SetUpPostRequest(string resourceName, IDictionary<string, string> values)
         {
             var uri = this.GetResourceUri(resourceName);

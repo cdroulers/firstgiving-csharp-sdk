@@ -47,7 +47,7 @@ namespace FirstGiving.Sdk.Api
         }
 
         /// <summary>
-        /// Donates by credit card.
+        /// Make a donation via a credit card.
         /// </summary>
         /// <param name="donation">The donation.</param>
         /// <param name="paymentData">The payment data.</param>
@@ -60,7 +60,7 @@ namespace FirstGiving.Sdk.Api
         }
 
         /// <summary>
-        /// Donates by credit card in a recurring fashion.
+        /// Make a recurring donation via credit card.
         /// </summary>
         /// <param name="donation">The donation.</param>
         /// <param name="paymentData">The payment data.</param>

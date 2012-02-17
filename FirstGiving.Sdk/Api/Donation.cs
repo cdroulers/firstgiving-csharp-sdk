@@ -5,6 +5,9 @@ using System.Text;
 
 namespace FirstGiving.Sdk.Api
 {
+    /// <summary>
+    ///     A FirstGiving donation.
+    /// </summary>
     public class Donation
     {
         /// <summary>
@@ -71,6 +74,13 @@ namespace FirstGiving.Sdk.Api
         /// </summary>
         public Currency Currency { get; set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Donation"/> class.
+        /// </summary>
+        /// <param name="charityID">The charity ID.</param>
+        /// <param name="description">The description.</param>
+        /// <param name="amount">The amount.</param>
+        /// <param name="currency">The currency.</param>
         public Donation(Guid charityID, string description, decimal amount, Currency currency = Currency.USD)
         {
             this.CharityID = charityID;

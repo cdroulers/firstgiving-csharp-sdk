@@ -10,13 +10,31 @@ using System.Xml.Linq;
 
 namespace FirstGiving.Sdk.Api
 {
+    /// <summary>
+    ///     A REST client for the FirstGiving API
+    /// </summary>
     public class ApiClient : BaseRestClient, IApiClient
     {
+        /// <summary>
+        /// Gets the application key.
+        /// </summary>
         public string ApplicationKey { get; private set; }
+        /// <summary>
+        /// Gets the security token.
+        /// </summary>
         public string SecurityToken { get; private set; }
 
+        /// <summary>
+        /// Gets the lastest response.
+        /// </summary>
         public ResponseData LastestResponse { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ApiClient"/> class.
+        /// </summary>
+        /// <param name="applicationKey">The application key.</param>
+        /// <param name="securityToken">The security token.</param>
+        /// <param name="apiEndpoint">The API endpoint.</param>
         public ApiClient(string applicationKey, string securityToken, Uri apiEndpoint)
             : base(apiEndpoint)
         {
@@ -24,6 +42,10 @@ namespace FirstGiving.Sdk.Api
             this.SecurityToken = securityToken;
         }
 
+        /// <summary>
+        /// Says the hello.
+        /// </summary>
+        /// <returns></returns>
         public string SayHello()
         {
             var xml = this.SendApiRequest("/default/test/0", "GET");
@@ -125,17 +147,33 @@ namespace FirstGiving.Sdk.Api
             return valid.Value == "1";
         }
 
+        /// <summary>
+        /// Called just before a request is made.
+        /// </summary>
+        /// <param name="request">The request.</param>
         protected override void PreRequest(HttpWebRequest request)
         {
             request.Headers["JG_APPLICATIONKEY"] = this.ApplicationKey;
             request.Headers["JG_SECURITYTOKEN"] = this.SecurityToken;
         }
 
+        /// <summary>
+        /// Called after a request is made.
+        /// </summary>
+        /// <param name="result">The result.</param>
+        /// <param name="resultBody">The result body.</param>
+        /// <param name="response">The response.</param>
         protected override void PostRequest(string result, XDocument resultBody, HttpWebResponse response)
         {
             this.LastestResponse = new ResponseData(resultBody, result, response.Headers["Jg-Response-Signature"]);
         }
 
+        /// <summary>
+        /// Called when an exception occurss
+        /// </summary>
+        /// <param name="resultBody">The result body.</param>
+        /// <param name="response">The response.</param>
+        /// <param name="e">The e.</param>
         protected override void OnException(XDocument resultBody, HttpWebResponse response, Exception e)
         {
             switch (response.StatusCode)
