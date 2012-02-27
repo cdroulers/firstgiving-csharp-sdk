@@ -55,6 +55,7 @@ namespace FirstGiving.Sdk.Api
             paymentData.Address1 = "1 Main St.";
             paymentData.City = "Burlington";
             paymentData.ZipCode = "01803";
+            paymentData.State = "MA";
             paymentData.Country = "US";
             paymentData.UpdateCardData("4457010000000009", CreditCardKind.Visa, new DateTime(2025, 01, 01), "111");
         }
