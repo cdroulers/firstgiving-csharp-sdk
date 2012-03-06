@@ -72,7 +72,7 @@ namespace FirstGiving.Sdk.Api
         /// <param name="cardValidationNumber">The card validation number.</param>
         public void UpdateCardData(string cardNumber, CreditCardKind cardKind, DateTime cardExpirationDate, string cardValidationNumber)
         {
-            Validate.Is.NotNullOrWhiteSpace(cardNumber, "CardNumber");
+            Validate.Is.Not.NullOrWhiteSpace(cardNumber, "CardNumber");
             switch (cardKind)
             {
                 case CreditCardKind.AmericanExpress:
@@ -83,7 +83,7 @@ namespace FirstGiving.Sdk.Api
                     break;
             }
 
-            Validate.Is.NotNullOrWhiteSpace(cardValidationNumber, "CardValidationNumber");
+            Validate.Is.Not.NullOrWhiteSpace(cardValidationNumber, "CardValidationNumber");
             switch (cardKind)
             {
                 case CreditCardKind.Visa:

@@ -74,8 +74,8 @@ namespace FirstGiving.Sdk
         /// <returns></returns>
         protected XDocument SendApiRequest(string resourceName, string httpMethod, IDictionary<string, string> values = null)
         {
-            Validate.Is.NotNullOrWhiteSpace(resourceName, "resourceName");
-            Validate.Is.NotNullOrWhiteSpace(httpMethod, "httpMethod");
+            Validate.Is.Not.NullOrWhiteSpace(resourceName, "resourceName");
+            Validate.Is.Not.NullOrWhiteSpace(httpMethod, "httpMethod");
 
             HttpWebRequest request = null;
 
@@ -184,7 +184,7 @@ namespace FirstGiving.Sdk
         /// </summary>
         private static string SanitizeXmlString(string xml)
         {
-            Validate.Is.NotNull(xml, "xml");
+            Validate.Is.Not.Null(xml, "xml");
 
             StringBuilder buffer = new StringBuilder(xml.Length);
 

@@ -135,8 +135,8 @@ namespace FirstGiving.Sdk.Api
         /// <returns>True if it originated from FirstGiving.</returns>
         public bool Verify(string message, string signature)
         {
-            Validate.Is.NotNullOrWhiteSpace(message, "message");
-            Validate.Is.NotNullOrWhiteSpace(signature, "signature");
+            Validate.Is.Not.NullOrWhiteSpace(message, "message");
+            Validate.Is.Not.NullOrWhiteSpace(signature, "signature");
 
             var parameters = new Dictionary<string, string>();
             parameters["message"] = message;

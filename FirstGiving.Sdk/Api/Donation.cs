@@ -36,7 +36,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.description; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "Description");
+                Validate.Is.Not.NullOrWhiteSpace(value, "Description");
                 this.description = value;
             }
         }

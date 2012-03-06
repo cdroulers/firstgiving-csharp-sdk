@@ -40,7 +40,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.firstName; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "FirstName");
+                Validate.Is.Not.NullOrWhiteSpace(value, "FirstName");
                 Validate.Is.LowerThanOrEqualTo(value.Length, 100, "FirstName.Length");
                 this.firstName = value;
             }
@@ -75,7 +75,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.lastName; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "LastName");
+                Validate.Is.Not.NullOrWhiteSpace(value, "LastName");
                 Validate.Is.LowerThanOrEqualTo(value.Length, 100, "LastName.Length");
                 this.lastName = value;
             }
@@ -93,7 +93,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.address1; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "Address1");
+                Validate.Is.Not.NullOrWhiteSpace(value, "Address1");
                 Validate.Is.LowerThanOrEqualTo(value.Length, 255, "Address1.Length");
                 this.address1 = value;
             }
@@ -145,7 +145,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.city; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "City");
+                Validate.Is.Not.NullOrWhiteSpace(value, "City");
                 Validate.Is.LowerThanOrEqualTo(value.Length, 35, "City.Length");
                 this.city = value;
             }
@@ -163,7 +163,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.state; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "State");
+                Validate.Is.Not.NullOrWhiteSpace(value, "State");
                 Validate.Is.LowerThanOrEqualTo((value ?? string.Empty).Length, 30, "State.Length");
                 this.state = value;
             }
@@ -181,7 +181,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.zipCode; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "ZipCode");
+                Validate.Is.Not.NullOrWhiteSpace(value, "ZipCode");
                 Validate.Is.LowerThanOrEqualTo(value.Length, 20, "ZipCode.Length");
                 this.zipCode = value;
             }
@@ -199,7 +199,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.country; }
             set
             {
-                Validate.Is.NotNullOrWhiteSpace(value, "Country");
+                Validate.Is.Not.NullOrWhiteSpace(value, "Country");
                 Validate.Is.EqualTo(value.Length, 2, "Country.Length");
                 this.country = value;
             }
@@ -217,7 +217,7 @@ namespace FirstGiving.Sdk.Api
             get { return this.emailAddress; }
             set
             {
-                Validate.Is.NotNull(value, "EmailAddress");
+                Validate.Is.Not.Null(value, "EmailAddress");
                 Validate.Is.LowerThanOrEqualTo(value.Address.Length, 100, "EmailAddress.Length");
                 this.emailAddress = value;
             }
