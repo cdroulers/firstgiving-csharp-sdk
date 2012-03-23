@@ -104,24 +104,16 @@ namespace FirstGiving.Sdk.Charities
                 case HttpStatusCode.NotFound:
                     throw new NotFoundException("Object not found.", e, resultBody);
                 case HttpStatusCode.BadRequest:
-                    throw new InvalidInputException(GetInvalidInputErrorMessage(resultBody), e, resultBody);
+                    throw new InvalidInputException(GetErrorMessage(resultBody), e, resultBody);
                 case HttpStatusCode.InternalServerError:
-                    throw new ServerErrorException(GetServerErrorErrorMessage(resultBody), e, resultBody);
+                    throw new ServerErrorException(GetErrorMessage(resultBody), e, resultBody);
             }
         }
-
-        private static string GetInvalidInputErrorMessage(XDocument responseContent)
+        
+        private static string GetErrorMessage(XDocument responseContent)
         {
             var node = responseContent.Descendants("message").First();
-            return string.Format(@"The request was malformed. Error message was:
-{0}", node.Value);
-        }
-
-        private static string GetServerErrorErrorMessage(XDocument responseContent)
-        {
-            var node = responseContent.Descendants("message").First();
-            return string.Format(@"A server error occurred! Error message was:
-{0}", node.Value);
+            return node.Value;
         }
 
         private static List<Charity> GetCharities(XElement element)

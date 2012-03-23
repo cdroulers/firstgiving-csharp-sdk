@@ -194,14 +194,13 @@ namespace FirstGiving.Sdk.Api
             string errorMessage = node.Attributes("verboseErrorMessage").First().Value;
             var target = node.Attributes("errorTarget").FirstOrDefault();
             errorTarget = target == null ? string.Empty : target.Value;
-            return string.Format(@"An error occurred for the target ""{0}"". Error message was:
-{1}", errorTarget, errorMessage);
+            return errorMessage;
         }
 
         private static string GetServerErrorErrorMessage(XDocument responseContent)
         {
             var node = responseContent.Descendants("firstGivingResponse").First();
-            return "Server error. Message was:" + Environment.NewLine + node.Attributes("verboseErrorMessage").First().Value;
+            return node.Attributes("verboseErrorMessage").First().Value;
         }
 
         private static IDictionary<string, string> GetCreditCardParameters(Donation donation, CreditCardPaymentData paymentData, IPAddress remoteAddress)
