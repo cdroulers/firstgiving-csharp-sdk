@@ -21,8 +21,8 @@ using this tokenized nuspec file.
     <title />
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <licenseUrl>http://www.gnu.org/licenses/lgpl.html</licenseUrl>
-    <projectUrl>http://code.google.com/p/awesome-sql-builder/</projectUrl>
+    <licenseUrl>http://www.apache.org/licenses/LICENSE-2.0</licenseUrl>
+    <projectUrl>http://code.google.com/p/firstgiving-csharp-sdk/</projectUrl>
   </metadata>
   <files />
 </package>

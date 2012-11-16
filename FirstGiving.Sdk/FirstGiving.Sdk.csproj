@@ -83,6 +83,7 @@
     <Compile Include="ResponseData.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="FirstGiving.Sdk.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
