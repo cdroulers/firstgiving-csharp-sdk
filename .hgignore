@@ -4,3 +4,7 @@ obj/
 bin/
 FirstGiving.Sdk.Test.Integration/credentials.txt
 *.suo
+NuGet.exe
+builds/
+*.user
+packages/
