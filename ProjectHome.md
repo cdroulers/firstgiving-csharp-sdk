@@ -1,0 +1,46 @@
+FirstGiving C# SDK
+
+---
+
+
+Kind-of port from https://github.com/firstgiving/FirstGiving-PHP-SDK
+
+The FirstGiving Platform is a set of APIs that integrate our charity and donations capabilities into your website. Read more about integrating FirstGiving with your web site on the FirstGiving developer site.
+
+This repository contains the open source C# SDK that allows you to utilize the above on your website. Except as otherwise noted, the FirstGiving C# SDK is licensed under the Apache Licence, Version 2.0 (http://www.apache.org/licenses/LICENSE-2.0.html)
+
+API Information: http://developers.firstgiving.com/
+
+
+Usage
+
+---
+
+
+```
+var apiClient = new ApiClient("YourFirstGivingKey", "YourFirstGivingSecret", "https://api.firstgiving.com/"); // Use http://usapisandbox.fgdev.net/ for sandbox
+var donation = new Donation(new Guid("00000000-0000-0000-0000-000000000000"), "donation description", 25.0M);
+var paymentData = new CreditCardPaymentData("First", "Last", "1 Main St.", "Burlington", "01803", "US", new MailAddress("test@example.org"),
+                "CardNumberHere", CreditCardKind.Visa, new DateTime(2012, 01, 01), "111");
+
+var transactionID = apiClient.DonateByCreditCard(donation, paymentData, "127.0.0.1");
+```
+
+
+Documentation
+
+---
+
+
+Code should be fairly straight forward. Required fields are asked in constructors, optional are public properties. Restrictions (such as length and format) are available in the API information link up there.
+
+
+
+
+Feedback
+
+---
+
+
+We are relying on the Google Code issue tracker linked from above for
+feedback. File bugs or other issues at http://code.google.com/p/firstgiving-csharp-sdk/issues/list
