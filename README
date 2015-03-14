@@ -32,5 +32,5 @@ Code should be fairly straight forward. Required fields are asked in constructor
 Feedback
 --------
 
-We are relying on the Google Code issue tracker linked from above for
-feedback. File bugs or other issues at http://code.google.com/p/firstgiving-csharp-sdk/issues/list
+We are relying on the GitHub issue tracker linked from above for
+feedback. File bugs or other issues at https://github.com/cdroulers/firstgiving-csharp-sdk/issues
